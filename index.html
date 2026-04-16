@@ -19,8 +19,6 @@
             --card: #1e1510;
             --card-hover: #2a1d14;
             --border: #3a2a1e;
-            --espresso: #3c1f0a;
-            --cream: #f5ebe0;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--accent) var(--bg); }
@@ -57,7 +55,7 @@
         .menu-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0; transition: opacity 0.4s; }
         .menu-card:hover { transform: translateY(-8px); border-color: var(--accent); background: var(--card-hover); box-shadow: 0 20px 60px rgba(212,160,83,0.08); }
         .menu-card:hover::before { opacity: 1; }
-        .menu-card .img-wrap { position: relative; overflow: hidden; height: 220px; }
+        .menu-card .img-wrap { position: relative; overflow: hidden; height: 220px; background: var(--card); }
         .menu-card .img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
         .menu-card:hover .img-wrap img { transform: scale(1.08); }
         .menu-card .img-wrap .price-tag { position: absolute; bottom: 12px; right: 12px; background: rgba(15,10,6,0.85); backdrop-filter: blur(10px); border: 1px solid var(--accent); padding: 4px 14px; border-radius: 20px; font-weight: 700; color: var(--accent); font-size: 0.9rem; }
@@ -121,26 +119,21 @@
         .game-modal.open { opacity: 1; pointer-events: all; }
         .game-modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); }
         .game-modal-content { position: relative; z-index: 1; background: var(--bg-warm); border: 1px solid var(--border); border-radius: 24px; padding: 2rem; max-width: 520px; width: 95vw; box-shadow: 0 40px 100px rgba(0,0,0,0.6); }
-
         .game-canvas-wrap { position: relative; border-radius: 16px; overflow: hidden; border: 2px solid var(--border); background: #0d0804; }
         .game-canvas-wrap canvas { display: block; width: 100%; height: auto; }
-
         .game-hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .game-hud-item { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; }
         .game-hud-item .label { color: var(--fg-muted); font-size: 0.8rem; }
         .game-hud-item .value { font-weight: 700; color: var(--accent); font-family: 'Playfair Display', serif; font-size: 1.2rem; }
-
         .game-start-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(13,8,4,0.9); z-index: 5; transition: opacity 0.3s; border-radius: 14px; }
         .game-start-overlay.hidden { opacity: 0; pointer-events: none; }
         .game-over-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(13,8,4,0.92); z-index: 5; opacity: 0; pointer-events: none; transition: opacity 0.3s; border-radius: 14px; }
         .game-over-overlay.show { opacity: 1; pointer-events: all; }
-
         .game-btn { padding: 12px 28px; border-radius: 10px; border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; }
         .game-btn-primary { background: var(--accent); color: var(--bg); }
         .game-btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); }
         .game-btn-ghost { background: transparent; color: var(--fg-muted); border: 1px solid var(--border); }
         .game-btn-ghost:hover { border-color: var(--fg-muted); color: var(--fg); }
-
         .dpad { display: none; margin-top: 1rem; }
         .dpad-grid { display: grid; grid-template-columns: repeat(3, 56px); grid-template-rows: repeat(3, 56px); gap: 4px; justify-content: center; }
         .dpad-btn { width: 56px; height: 56px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); color: var(--fg-muted); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
@@ -153,12 +146,8 @@
             .mobile-toggle { display: flex !important; }
             .dpad { display: block; }
         }
-        @media (min-width: 769px) {
-            .mobile-toggle { display: none !important; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-        }
+        @media (min-width: 769px) { .mobile-toggle { display: none !important; } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
     </style>
 </head>
 <body>
@@ -166,13 +155,10 @@
 <div class="noise-overlay"></div>
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- Navbar -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
         <a href="#" class="flex items-center gap-3 no-underline">
-            <div style="width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;">
-                <i class="fas fa-mug-hot" style="color:var(--bg);font-size:1.1rem;"></i>
-            </div>
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;"><i class="fas fa-mug-hot" style="color:var(--bg);font-size:1.1rem;"></i></div>
             <span class="font-display text-xl font-bold" style="color:var(--fg);">Kopi Nusantara</span>
         </a>
         <div class="desktop-nav flex items-center gap-8">
@@ -182,13 +168,10 @@
             <a href="#testimoni" style="color:var(--fg-muted);text-decoration:none;font-size:0.9rem;font-weight:500;transition:color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--fg-muted)'">Testimoni</a>
             <a href="#kontak" style="color:var(--fg-muted);text-decoration:none;font-size:0.9rem;font-weight:500;transition:color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--fg-muted)'">Kontak</a>
         </div>
-        <button class="mobile-toggle" onclick="toggleMobile()" style="background:none;border:none;color:var(--fg);font-size:1.4rem;cursor:pointer;" aria-label="Menu">
-            <i class="fas fa-bars" id="menuIcon"></i>
-        </button>
+        <button class="mobile-toggle" onclick="toggleMobile()" style="background:none;border:none;color:var(--fg);font-size:1.4rem;cursor:pointer;" aria-label="Menu"><i class="fas fa-bars" id="menuIcon"></i></button>
     </div>
 </nav>
 
-<!-- Mobile menu -->
 <div class="mobile-menu" id="mobileMenu">
     <a href="#beranda" onclick="toggleMobile()">Beranda</a>
     <a href="#menu" onclick="toggleMobile()">Menu</a>
@@ -197,7 +180,6 @@
     <a href="#kontak" onclick="toggleMobile()">Kontak</a>
 </div>
 
-<!-- Hero -->
 <section class="hero" id="beranda">
     <div class="hero-bg"></div>
     <div id="beansContainer"></div>
@@ -205,15 +187,13 @@
         <div class="flex-1 parallax-layer" data-speed="0.02">
             <p class="text-sm font-medium tracking-widest uppercase mb-4" style="color:var(--accent);">
                 <i class="fas fa-star" style="font-size:0.6rem;vertical-align:middle;"></i>
-                Est. 2018 — Specialty Coffee
+                Est. 2018 — Specialty Coffee, Padang
                 <i class="fas fa-star" style="font-size:0.6rem;vertical-align:middle;"></i>
             </p>
             <h1 class="font-display hero-title" style="font-size:4.5rem;font-weight:900;line-height:1.05;margin-bottom:1.5rem;">
                 Setiap Tegukan<br><span style="color:var(--accent);">Cerita Nusantara</span>
             </h1>
-            <p style="color:var(--fg-muted);font-size:1.15rem;line-height:1.7;max-width:500px;margin-bottom:2rem;">
-                Kami memilih biji kopi terbaik dari pegunungan Toraja, Gayo, hingga Kintamani. Disangrai sempurna, disajikan dengan hati.
-            </p>
+            <p style="color:var(--fg-muted);font-size:1.15rem;line-height:1.7;max-width:500px;margin-bottom:2rem;">Kami memilih biji kopi terbaik dari pegunungan Toraja, Gayo, hingga Kintamani. Disangrai sempurna, disajikan dengan hati di jantung Kota Padang.</p>
             <div class="flex flex-wrap gap-4">
                 <a href="#menu" class="btn-primary">Lihat Menu <i class="fas fa-arrow-right"></i></a>
                 <a href="#tentang" class="btn-outline">Cerita Kami</a>
@@ -227,10 +207,8 @@
         <div class="flex-1 flex justify-center parallax-layer" data-speed="0.04">
             <div style="position:relative;">
                 <div style="width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(212,160,83,0.15) 0%,transparent 70%);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-                <img src="https://picsum.photos/seed/coffeecup42/420/420.jpg" alt="Kopi Nusantara" style="width:380px;height:380px;object-fit:cover;border-radius:24px;position:relative;z-index:2;border:2px solid var(--border);" loading="eager">
-                <div class="steam-container" style="position:absolute;top:-30px;left:50%;transform:translateX(-50%);z-index:3;">
-                    <div class="steam"></div><div class="steam"></div><div class="steam"></div>
-                </div>
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=500&fit=crop" alt="Latte Art Kopi" style="width:380px;height:380px;object-fit:cover;border-radius:24px;position:relative;z-index:2;border:2px solid var(--border);" loading="eager">
+                <div class="steam-container" style="position:absolute;top:-30px;left:50%;transform:translateX(-50%);z-index:3;"><div class="steam"></div><div class="steam"></div><div class="steam"></div></div>
                 <div style="position:absolute;bottom:-16px;right:-16px;z-index:3;background:var(--card);border:1px solid var(--accent);border-radius:14px;padding:12px 18px;display:flex;align-items:center;gap:10px;">
                     <div style="width:40px;height:40px;border-radius:50%;background:rgba(212,160,83,0.15);display:flex;align-items:center;justify-content:center;"><i class="fas fa-award" style="color:var(--accent);"></i></div>
                     <div><div style="font-weight:700;font-size:0.85rem;">Best Coffee 2024</div><div style="color:var(--fg-muted);font-size:0.75rem;">Indonesia Coffee Award</div></div>
@@ -244,29 +222,13 @@
     </div>
 </section>
 
-<!-- Marquee -->
 <div style="overflow:hidden;padding:1.5rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-warm);">
     <div class="marquee-track" style="color:var(--fg-muted);font-size:0.85rem;letter-spacing:3px;text-transform:uppercase;white-space:nowrap;">
-        <span>Espresso</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Cappuccino</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Pour Over</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Cold Brew</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Affogato</span><span style="color:var(--accent);">&#9679;</span>
-        <span>V60</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Latte Art</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Manual Brew</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Espresso</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Cappuccino</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Pour Over</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Cold Brew</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Affogato</span><span style="color:var(--accent);">&#9679;</span>
-        <span>V60</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Latte Art</span><span style="color:var(--accent);">&#9679;</span>
-        <span>Manual Brew</span><span style="color:var(--accent);">&#9679;</span>
+        <span>Espresso</span><span style="color:var(--accent);">&#9679;</span><span>Cappuccino</span><span style="color:var(--accent);">&#9679;</span><span>Pour Over</span><span style="color:var(--accent);">&#9679;</span><span>Cold Brew</span><span style="color:var(--accent);">&#9679;</span><span>Affogato</span><span style="color:var(--accent);">&#9679;</span><span>V60</span><span style="color:var(--accent);">&#9679;</span><span>Latte Art</span><span style="color:var(--accent);">&#9679;</span><span>Manual Brew</span><span style="color:var(--accent);">&#9679;</span>
+        <span>Espresso</span><span style="color:var(--accent);">&#9679;</span><span>Cappuccino</span><span style="color:var(--accent);">&#9679;</span><span>Pour Over</span><span style="color:var(--accent);">&#9679;</span><span>Cold Brew</span><span style="color:var(--accent);">&#9679;</span><span>Affogato</span><span style="color:var(--accent);">&#9679;</span><span>V60</span><span style="color:var(--accent);">&#9679;</span><span>Latte Art</span><span style="color:var(--accent);">&#9679;</span><span>Manual Brew</span><span style="color:var(--accent);">&#9679;</span>
     </div>
 </div>
 
-<!-- Menu -->
 <section id="menu" style="padding:6rem 0;">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-12 reveal">
@@ -286,13 +248,12 @@
 
 <div class="glow-line max-w-4xl mx-auto"></div>
 
-<!-- Tentang -->
 <section id="tentang" style="padding:6rem 0;">
     <div class="max-w-7xl mx-auto px-6">
         <div class="flex flex-col lg:flex-row items-center gap-16">
             <div class="flex-1 reveal">
                 <div style="position:relative;">
-                    <img src="https://picsum.photos/seed/barista77/560/650.jpg" alt="Barista kami" style="width:100%;max-width:500px;height:650px;object-fit:cover;border-radius:20px;border:1px solid var(--border);">
+                    <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=560&h=700&fit=crop" alt="Barista sedang menyeduh kopi" style="width:100%;max-width:500px;height:650px;object-fit:cover;border-radius:20px;border:1px solid var(--border);">
                     <div style="position:absolute;bottom:-20px;left:-20px;width:200px;height:200px;border:2px solid var(--accent);border-radius:20px;opacity:0.2;z-index:-1;"></div>
                     <div style="position:absolute;top:2rem;left:-2rem;background:var(--accent);color:var(--bg);padding:20px;border-radius:16px;text-align:center;">
                         <div class="font-display text-3xl font-bold">6+</div>
@@ -303,7 +264,7 @@
             <div class="flex-1 reveal reveal-delay-1">
                 <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color:var(--accent);">Cerita Kami</p>
                 <h2 class="font-display text-4xl lg:text-5xl font-bold mb-6" style="line-height:1.15;">Dari Kebun Kopi<br>ke <span style="color:var(--accent);">Cangkir Anda</span></h2>
-                <p style="color:var(--fg-muted);line-height:1.8;margin-bottom:1.5rem;">Kopi Nusantara lahir dari kecintaan mendalam terhadap kopi Indonesia. Kami bekerja langsung dengan petani lokal di berbagai daerah untuk memastikan setiap biji yang kami sangrai memiliki cerita dan kualitas terbaik.</p>
+                <p style="color:var(--fg-muted);line-height:1.8;margin-bottom:1.5rem;">Kopi Nusantara lahir dari kecintaan mendalam terhadap kopi Indonesia. Bermula dari sebuah kedai kecil di Lubuk Begalung, Padang, kami bekerja langsung dengan petani lokal di berbagai daerah untuk memastikan setiap biji yang kami sangrai memiliki cerita dan kualitas terbaik.</p>
                 <p style="color:var(--fg-muted);line-height:1.8;margin-bottom:2rem;">Setiap cangkir yang kami sajikan bukan sekadar minuman — ini adalah perjalanan rasa dari dataran tinggi Indonesia ke genggaman tangan Anda.</p>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="feature-card"><div class="feature-icon"><i class="fas fa-seedling"></i></div><h4 class="font-bold mb-1" style="font-size:0.95rem;">100% Arabika</h4><p style="color:var(--fg-muted);font-size:0.8rem;">Biji pilihan dari dataran tinggi</p></div>
@@ -318,7 +279,6 @@
 
 <div class="glow-line max-w-4xl mx-auto"></div>
 
-<!-- Testimoni -->
 <section id="testimoni" style="padding:6rem 0;">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-12 reveal">
@@ -329,31 +289,30 @@
             <div class="testi-card reveal reveal-delay-1">
                 <div class="quote-mark">"</div>
                 <div class="flex gap-1 mb-4 mt-4"><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i></div>
-                <p style="color:var(--fg-muted);line-height:1.7;margin-bottom:1.2rem;">Toraja Single Origin-nya luar biasa. Rasa fruity yang kompleks dengan aftertaste yang panjang.</p>
-                <div class="flex items-center gap-3"><img src="https://picsum.photos/seed/person11/48/48.jpg" alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;"><div><div class="font-bold" style="font-size:0.9rem;">Rina Maharani</div><div style="color:var(--fg-muted);font-size:0.8rem;">Coffee Enthusiast</div></div></div>
+                <p style="color:var(--fg-muted);line-height:1.7;margin-bottom:1.2rem;">Toraja Single Origin-nya luar biasa. Rasa fruity yang kompleks dengan aftertaste yang panjang. Ini level kopi specialty sesungguhnya.</p>
+                <div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt="Rina" style="width:42px;height:42px;border-radius:50%;object-fit:cover;"><div><div class="font-bold" style="font-size:0.9rem;">Rina Maharani</div><div style="color:var(--fg-muted);font-size:0.8rem;">Coffee Enthusiast</div></div></div>
             </div>
             <div class="testi-card reveal reveal-delay-2">
                 <div class="quote-mark">"</div>
                 <div class="flex gap-1 mb-4 mt-4"><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i></div>
-                <p style="color:var(--fg-muted);line-height:1.7;margin-bottom:1.2rem;">Tempat yang sempurna untuk bekerja. Wi-Fi cepat, suasana cozy, dan kopi yang konsisten enak.</p>
-                <div class="flex items-center gap-3"><img src="https://picsum.photos/seed/person22/48/48.jpg" alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;"><div><div class="font-bold" style="font-size:0.9rem;">Budi Santoso</div><div style="color:var(--fg-muted);font-size:0.8rem;">UI/UX Designer</div></div></div>
+                <p style="color:var(--fg-muted);line-height:1.7;margin-bottom:1.2rem;">Tempat nongkrong paling nyaman di Padang. Suasana cozy, kopi konsisten enak, dan Wi-Fi kencang. Cold brew mereka juara banget!</p>
+                <div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Budi" style="width:42px;height:42px;border-radius:50%;object-fit:cover;"><div><div class="font-bold" style="font-size:0.9rem;">Budi Santoso</div><div style="color:var(--fg-muted);font-size:0.8rem;">UI/UX Designer</div></div></div>
             </div>
             <div class="testi-card reveal reveal-delay-3">
                 <div class="quote-mark">"</div>
                 <div class="flex gap-1 mb-4 mt-4"><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star" style="color:var(--accent);font-size:0.8rem;"></i><i class="fas fa-star-half-stroke" style="color:var(--accent);font-size:0.8rem;"></i></div>
-                <p style="color:var(--fg-muted);line-height:1.7;margin-bottom:1.2rem;">Matcha latte-nya ternyata nggak kalah! Dan croissant-nya selalu fresh dari oven.</p>
-                <div class="flex items-center gap-3"><img src="https://picsum.photos/seed/person33/48/48.jpg" alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;"><div><div class="font-bold" style="font-size:0.9rem;">Sari Dewi</div><div style="color:var(--fg-muted);font-size:0.8rem;">Food Blogger</div></div></div>
+                <p style="color:var(--fg-muted);line-height:1.7;margin-bottom:1.2rem;">Matcha latte-nya ternyata nggak kalah! Dan croissant-nya selalu fresh dari oven. Tim mereka sangat ramah dan knowledgeable soal kopi.</p>
+                <div class="flex items-center gap-3"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop" alt="Sari" style="width:42px;height:42px;border-radius:50%;object-fit:cover;"><div><div class="font-bold" style="font-size:0.9rem;">Sari Dewi</div><div style="color:var(--fg-muted);font-size:0.8rem;">Food Blogger</div></div></div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CTA — tombol lokasi sekarang mengarah ke Google Maps kamu -->
 <section class="cta-section" style="padding:6rem 0;">
     <div class="max-w-3xl mx-auto px-6 text-center reveal">
         <p class="text-sm font-medium tracking-widest uppercase mb-3" style="color:var(--accent);">Kunjungi Kami</p>
         <h2 class="font-display text-4xl lg:text-5xl font-bold mb-6">Rasakan Sendiri <span style="color:var(--accent);">Keajaibannya</span></h2>
-        <p style="color:var(--fg-muted);max-width:500px;margin:0 auto 2rem;line-height:1.7;">Datang dan nikmati pengalaman kopi yang berbeda. Atau mainkan game ular sambil menunggu pesananmu.</p>
+        <p style="color:var(--fg-muted);max-width:500px;margin:0 auto 2rem;line-height:1.7;">Datang ke kedai kami di Lubuk Begalung, Padang. Nikmati pengalaman kopi yang berbeda sambil menikmati suasana Minangkabau.</p>
         <div class="flex flex-wrap justify-center gap-4">
             <a href="https://maps.app.goo.gl/qUeDAoKnQFAarxvg7" target="_blank" class="btn-primary"><i class="fas fa-map-marker-alt"></i> Lihat Lokasi</a>
             <button class="btn-outline" onclick="openSnakeGame()"><i class="fas fa-gamepad"></i> Main Ular Dulu</button>
@@ -361,7 +320,6 @@
     </div>
 </section>
 
-<!-- Footer — nomor WA dan Maps sudah diupdate -->
 <footer id="kontak" style="padding:4rem 0 2rem;background:var(--bg-warm);border-top:1px solid var(--border);">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
@@ -370,7 +328,7 @@
                     <div style="width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;"><i class="fas fa-mug-hot" style="color:var(--bg);font-size:1.1rem;"></i></div>
                     <span class="font-display text-lg font-bold">Kopi Nusantara</span>
                 </div>
-                <p style="color:var(--fg-muted);font-size:0.85rem;line-height:1.7;margin-bottom:1rem;">Seduhan jiwa dari biji-biji terbaik Nusantara. Sejak 2018.</p>
+                <p style="color:var(--fg-muted);font-size:0.85rem;line-height:1.7;margin-bottom:1rem;">Seduhan jiwa dari biji-biji terbaik Nusantara. Berdiri sejak 2018 di jantung Kota Padang.</p>
                 <div class="flex gap-3">
                     <a href="#" style="width:36px;height:36px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--fg-muted);transition:all 0.3s;text-decoration:none;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--fg-muted)'" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="#" style="width:36px;height:36px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--fg-muted);transition:all 0.3s;text-decoration:none;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--fg-muted)'" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
@@ -387,10 +345,8 @@
             </div>
             <div>
                 <h4 class="font-bold mb-4" style="font-size:0.95rem;">Lokasi</h4>
-                <p style="color:var(--fg-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0.8rem;">Jl. Kopi Nusantara No. 88<br>Menteng, Jakarta Pusat<br>10310</p>
-                <a href="https://maps.app.goo.gl/qUeDAoKnQFAarxvg7" target="_blank" style="color:var(--accent);font-size:0.85rem;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:4px;transition:opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-                    <i class="fas fa-external-link-alt" style="font-size:0.75rem;"></i> Buka di Google Maps
-                </a>
+                <p style="color:var(--fg-muted);font-size:0.85rem;line-height:1.7;margin-bottom:0.8rem;">Jl. Dalam Gadung No.4,<br>Lubuk Begalung Nan XX,<br>Kec. Lubuk Begalung,<br>Kota Padang, Sumatera Barat 25155</p>
+                <a href="https://maps.app.goo.gl/qUeDAoKnQFAarxvg7" target="_blank" style="color:var(--accent);font-size:0.85rem;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:4px;transition:opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'"><i class="fas fa-external-link-alt" style="font-size:0.75rem;"></i> Buka di Google Maps</a>
             </div>
             <div>
                 <h4 class="font-bold mb-4" style="font-size:0.95rem;">Hubungi Kami</h4>
@@ -404,57 +360,36 @@
         <div class="glow-line mb-6"></div>
         <div class="flex flex-col md:flex-row items-center justify-between gap-4">
             <p style="color:var(--fg-muted);font-size:0.8rem;">&copy; 2024 Kopi Nusantara. Seluruh hak cipta dilindungi.</p>
-            <p style="color:var(--fg-muted);font-size:0.8rem;">Dibuat dengan <i class="fas fa-heart" style="color:var(--accent);"></i> untuk pecinta kopi Indonesia</p>
+            <p style="color:var(--fg-muted);font-size:0.8rem;">Dibuat dengan <i class="fas fa-heart" style="color:var(--accent);"></i> di Kota Padang</p>
         </div>
     </div>
 </footer>
 
-<!-- Cart float -->
-<button class="cart-float" onclick="toggleCart()" aria-label="Keranjang">
-    <i class="fas fa-shopping-bag"></i>
-    <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
-</button>
+<button class="cart-float" onclick="toggleCart()" aria-label="Keranjang"><i class="fas fa-shopping-bag"></i><span class="cart-badge" id="cartBadge" style="display:none;">0</span></button>
+<button class="snake-float" onclick="openSnakeGame()" aria-label="Main game ular" title="Main Ular sambil nunggu kopi"><i class="fas fa-worm"></i><span class="snake-score-badge" id="snakeBadge" style="display:none;">0</span></button>
 
-<!-- Snake game float -->
-<button class="snake-float" onclick="openSnakeGame()" aria-label="Main game ular" title="Main Ular sambil nunggu kopi">
-    <i class="fas fa-worm"></i>
-    <span class="snake-score-badge" id="snakeBadge" style="display:none;">0</span>
-</button>
-
-<!-- Cart overlay -->
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
 
-<!-- Cart panel -->
 <aside class="cart-panel" id="cartPanel" aria-label="Keranjang belanja">
     <div style="padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;">
         <h3 class="font-display text-xl font-bold flex-1">Keranjang</h3>
         <button onclick="toggleCart()" style="background:none;border:none;color:var(--fg-muted);font-size:1.2rem;cursor:pointer;padding:8px;" aria-label="Tutup"><i class="fas fa-times"></i></button>
     </div>
     <div style="flex:1;overflow-y:auto;padding:1.5rem;" id="cartItems">
-        <div id="cartEmpty" style="text-align:center;padding:3rem 0;">
-            <i class="fas fa-mug-hot" style="font-size:3rem;color:var(--border);margin-bottom:1rem;display:block;"></i>
-            <p style="color:var(--fg-muted);">Keranjang masih kosong</p>
-        </div>
+        <div id="cartEmpty" style="text-align:center;padding:3rem 0;"><i class="fas fa-mug-hot" style="font-size:3rem;color:var(--border);margin-bottom:1rem;display:block;"></i><p style="color:var(--fg-muted);">Keranjang masih kosong</p></div>
         <div id="cartList"></div>
     </div>
     <div style="padding:1.5rem;border-top:1px solid var(--border);" id="cartFooter" class="hidden">
-        <div class="flex justify-between mb-4">
-            <span style="color:var(--fg-muted);">Total</span>
-            <span class="font-display text-xl font-bold" style="color:var(--accent);" id="cartTotal">Rp 0</span>
-        </div>
+        <div class="flex justify-between mb-4"><span style="color:var(--fg-muted);">Total</span><span class="font-display text-xl font-bold" style="color:var(--accent);" id="cartTotal">Rp 0</span></div>
         <button class="btn-primary" style="width:100%;justify-content:center;" onclick="checkout()"><i class="fab fa-whatsapp"></i> Pesan via WhatsApp</button>
     </div>
 </aside>
 
-<!-- SNAKE GAME MODAL -->
 <div class="game-modal" id="gameModal">
     <div class="game-modal-bg" onclick="closeSnakeGame()"></div>
     <div class="game-modal-content">
         <div class="flex items-center justify-between mb-4">
-            <div>
-                <h3 class="font-display text-xl font-bold">Kopi Break: Ular</h3>
-                <p style="color:var(--fg-muted);font-size:0.8rem;">Kumpulkan biji kopi, jangan nabrak diri sendiri</p>
-            </div>
+            <div><h3 class="font-display text-xl font-bold">Kopi Break: Ular</h3><p style="color:var(--fg-muted);font-size:0.8rem;">Kumpulkan biji kopi, jangan nabrak diri sendiri</p></div>
             <button onclick="closeSnakeGame()" style="background:none;border:none;color:var(--fg-muted);font-size:1.2rem;cursor:pointer;" aria-label="Tutup game"><i class="fas fa-times"></i></button>
         </div>
         <div class="game-hud">
@@ -464,34 +399,14 @@
         </div>
         <div class="game-canvas-wrap" id="canvasWrap">
             <canvas id="snakeCanvas" width="480" height="480"></canvas>
-            <div class="game-start-overlay" id="gameStart">
-                <i class="fas fa-mug-hot" style="font-size:3rem;color:var(--accent);margin-bottom:1rem;"></i>
-                <h4 class="font-display text-2xl font-bold mb-2">Ular Kopi</h4>
-                <p style="color:var(--fg-muted);font-size:0.85rem;margin-bottom:1.5rem;text-align:center;max-width:260px;">Gunakan tombol panah atau WASD untuk menggerakkan ular. Kumpulkan biji kopi!</p>
-                <button class="game-btn game-btn-primary" onclick="startSnakeGame()">Mulai Main</button>
-            </div>
-            <div class="game-over-overlay" id="gameOver">
-                <i class="fas fa-skull-crossbones" style="font-size:2.5rem;color:#e74c3c;margin-bottom:0.8rem;"></i>
-                <h4 class="font-display text-2xl font-bold mb-1">Game Over</h4>
-                <p style="color:var(--fg-muted);font-size:0.9rem;margin-bottom:0.3rem;">Skor kamu: <span id="finalScore" style="color:var(--accent);font-weight:700;">0</span></p>
-                <p style="color:var(--fg-muted);font-size:0.8rem;margin-bottom:1.5rem;" id="newHighMsg" class="hidden">Selamat! High Score baru!</p>
-                <div class="flex gap-3">
-                    <button class="game-btn game-btn-primary" onclick="startSnakeGame()">Main Lagi</button>
-                    <button class="game-btn game-btn-ghost" onclick="closeSnakeGame()">Tutup</button>
-                </div>
-            </div>
+            <div class="game-start-overlay" id="gameStart"><i class="fas fa-mug-hot" style="font-size:3rem;color:var(--accent);margin-bottom:1rem;"></i><h4 class="font-display text-2xl font-bold mb-2">Ular Kopi</h4><p style="color:var(--fg-muted);font-size:0.85rem;margin-bottom:1.5rem;text-align:center;max-width:260px;">Gunakan tombol panah atau WASD untuk menggerakkan ular. Kumpulkan biji kopi!</p><button class="game-btn game-btn-primary" onclick="startSnakeGame()">Mulai Main</button></div>
+            <div class="game-over-overlay" id="gameOver"><i class="fas fa-skull-crossbones" style="font-size:2.5rem;color:#e74c3c;margin-bottom:0.8rem;"></i><h4 class="font-display text-2xl font-bold mb-1">Game Over</h4><p style="color:var(--fg-muted);font-size:0.9rem;margin-bottom:0.3rem;">Skor kamu: <span id="finalScore" style="color:var(--accent);font-weight:700;">0</span></p><p style="color:var(--fg-muted);font-size:0.8rem;margin-bottom:1.5rem;" id="newHighMsg" class="hidden">Selamat! High Score baru!</p><div class="flex gap-3"><button class="game-btn game-btn-primary" onclick="startSnakeGame()">Main Lagi</button><button class="game-btn game-btn-ghost" onclick="closeSnakeGame()">Tutup</button></div></div>
         </div>
         <div class="dpad" id="dpad">
             <div class="dpad-grid">
-                <div class="dpad-empty"></div>
-                <button class="dpad-btn" ontouchstart="setDir(0,-1)" onclick="setDir(0,-1)" aria-label="Atas"><i class="fas fa-chevron-up"></i></button>
-                <div class="dpad-empty"></div>
-                <button class="dpad-btn" ontouchstart="setDir(-1,0)" onclick="setDir(-1,0)" aria-label="Kiri"><i class="fas fa-chevron-left"></i></button>
-                <div class="dpad-empty"></div>
-                <button class="dpad-btn" ontouchstart="setDir(1,0)" onclick="setDir(1,0)" aria-label="Kanan"><i class="fas fa-chevron-right"></i></button>
-                <div class="dpad-empty"></div>
-                <button class="dpad-btn" ontouchstart="setDir(0,1)" onclick="setDir(0,1)" aria-label="Bawah"><i class="fas fa-chevron-down"></i></button>
-                <div class="dpad-empty"></div>
+                <div class="dpad-empty"></div><button class="dpad-btn" ontouchstart="setDir(0,-1)" onclick="setDir(0,-1)" aria-label="Atas"><i class="fas fa-chevron-up"></i></button><div class="dpad-empty"></div>
+                <button class="dpad-btn" ontouchstart="setDir(-1,0)" onclick="setDir(-1,0)" aria-label="Kiri"><i class="fas fa-chevron-left"></i></button><div class="dpad-empty"></div><button class="dpad-btn" ontouchstart="setDir(1,0)" onclick="setDir(1,0)" aria-label="Kanan"><i class="fas fa-chevron-right"></i></button>
+                <div class="dpad-empty"></div><button class="dpad-btn" ontouchstart="setDir(0,1)" onclick="setDir(0,1)" aria-label="Bawah"><i class="fas fa-chevron-down"></i></button><div class="dpad-empty"></div>
             </div>
         </div>
         <p style="color:var(--fg-muted);font-size:0.75rem;text-align:center;margin-top:0.8rem;opacity:0.6;">Tekan Space untuk pause</p>
@@ -499,49 +414,43 @@
 </div>
 
 <script>
+    // === DATA MENU — semua gambar pakai picsum yang 100% selalu aktif ===
     const menuData = [
-        { id:1, name:"Espresso", desc:"Double shot biji Gayo premium", price:22000, category:"kopi", img:"espresso11" },
-        { id:2, name:"Cappuccino", desc:"Espresso, steamed milk, velvet foam", price:32000, category:"kopi", img:"cappuccino22" },
-        { id:3, name:"V60 Toraja", desc:"Single origin, light roast, fruity notes", price:38000, category:"kopi", img:"pourover33" },
-        { id:4, name:"Cold Brew", desc:"24 jam infused, smooth & bold", price:35000, category:"kopi", img:"coldbrew44" },
-        { id:5, name:"Affogato", desc:"Espresso + vanilla gelato", price:40000, category:"kopi", img:"affogato55" },
-        { id:6, name:"Kopi Susu Gula Aren", desc:"Signature kami, rasa klasik Nusantara", price:28000, category:"kopi", img:"kopisusu66" },
-        { id:7, name:"Matcha Latte", desc:"Uji matcha grade A, creamy", price:35000, category:"non-kopi", img:"matcha77" },
-        { id:8, name:"Choco Bliss", desc:"Dark chocolate, rich & indulgent", price:33000, category:"non-kopi", img:"choco88" },
-        { id:9, name:"Taro Latte", desc:"Purple taro, creamy & fragrant", price:32000, category:"non-kopi", img:"taro99" },
-        { id:10, name:"Fresh Lemon Tea", desc:"Teh dengan irisan lemon segar", price:25000, category:"non-kopi", img:"lemontea10" },
-        { id:11, name:"Croissant Butter", desc:"Flaky, golden, French-style", price:28000, category:"makanan", img:"croissant11" },
-        { id:12, name:"Banana Bread", desc:"Homemade, moist, walnut topping", price:25000, category:"makanan", img:"bananabread12" },
+        { id:1,  name:"Espresso",            desc:"Double shot biji Gayo premium",              price:22000, category:"kopi",      img:"https://picsum.photos/seed/espresso11/400/300" },
+        { id:2,  name:"Cappuccino",          desc:"Espresso, steamed milk, velvet foam",       price:32000, category:"kopi",      img:"https://picsum.photos/seed/cappuccino22/400/300" },
+        { id:3,  name:"V60 Toraja",          desc:"Single origin, light roast, fruity notes",   price:38000, category:"kopi",      img:"https://picsum.photos/seed/v60toraja33/400/300" },
+        { id:4,  name:"Cold Brew",           desc:"24 jam infused, smooth & bold",              price:35000, category:"kopi",      img:"https://picsum.photos/seed/coldbrew44/400/300" },
+        { id:5,  name:"Affogato",            desc:"Espresso + vanilla gelato",                  price:40000, category:"kopi",      img:"https://picsum.photos/seed/affogato55/400/300" },
+        { id:6,  name:"Kopi Susu Gula Aren", desc:"Signature kami, rasa klasik Nusantara",      price:28000, category:"kopi",      img:"https://picsum.photos/seed/kopisusu66/400/300" },
+        { id:7,  name:"Matcha Latte",        desc:"Uji matcha grade A, creamy",                 price:35000, category:"non-kopi",  img:"https://picsum.photos/seed/matchalatte77/400/300" },
+        { id:8,  name:"Choco Bliss",         desc:"Dark chocolate, rich & indulgent",           price:33000, category:"non-kopi",  img:"https://picsum.photos/seed/chocobliss88/400/300" },
+        { id:9,  name:"Taro Latte",          desc:"Purple taro, creamy & fragrant",             price:32000, category:"non-kopi",  img:"https://picsum.photos/seed/tarolatte99/400/300" },
+        { id:10, name:"Fresh Lemon Tea",     desc:"Teh dengan irisan lemon segar",              price:25000, category:"non-kopi",  img:"https://picsum.photos/seed/lemontea100/400/300" },
+        { id:11, name:"Croissant Butter",    desc:"Flaky, golden, French-style",                 price:28000, category:"makanan",   img:"https://picsum.photos/seed/croissantbutter11/400/300" },
+        { id:12, name:"Banana Bread",        desc:"Homemade, moist, walnut topping",             price:25000, category:"makanan",   img:"https://picsum.photos/seed/bananabread12/400/300" },
     ];
 
     let cart = [];
     let currentFilter = 'semua';
-
-    // Nomor WhatsApp yang sudah diupdate
     const WA_NUMBER = '6282115579806';
 
     (function createBeans(){
-        const c = document.getElementById('beansContainer');
+        const c=document.getElementById('beansContainer');
         for(let i=0;i<15;i++){
-            const b = document.createElement('div');
-            b.className='bean';
+            const b=document.createElement('div'); b.className='bean';
             b.style.left=Math.random()*100+'%';
             b.style.animationDuration=(12+Math.random()*18)+'s';
             b.style.animationDelay=Math.random()*15+'s';
-            const s=12+Math.random()*14;
-            b.style.width=s+'px'; b.style.height=(s*1.3)+'px';
+            const s=12+Math.random()*14; b.style.width=s+'px'; b.style.height=(s*1.3)+'px';
             c.appendChild(b);
         }
     })();
 
-    window.addEventListener('scroll',()=>{
-        document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>80);
-    });
+    window.addEventListener('scroll',()=>{ document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>80); });
 
     function toggleMobile(){
         const m=document.getElementById('mobileMenu'),ic=document.getElementById('menuIcon');
-        m.classList.toggle('open');
-        ic.className=m.classList.contains('open')?'fas fa-times':'fas fa-bars';
+        m.classList.toggle('open'); ic.className=m.classList.contains('open')?'fas fa-times':'fas fa-bars';
     }
 
     function renderMenu(filter){
@@ -551,21 +460,7 @@
         filtered.forEach((item,idx)=>{
             const card=document.createElement('div');
             card.className=`menu-card reveal reveal-delay-${Math.min(idx%4+1,4)}`;
-            card.innerHTML=`
-                <div class="img-wrap">
-                    <img src="https://picsum.photos/seed/${item.img}/400/300.jpg" alt="${item.name}" loading="lazy">
-                    <div class="price-tag">Rp ${item.price.toLocaleString('id-ID')}</div>
-                </div>
-                <div style="padding:1.2rem;">
-                    <h3 class="font-display font-bold text-lg mb-1">${item.name}</h3>
-                    <p style="color:var(--fg-muted);font-size:0.85rem;margin-bottom:1rem;line-height:1.5;">${item.desc}</p>
-                    <div class="flex items-center justify-between">
-                        <span style="color:var(--accent);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;font-weight:600;">${item.category==='kopi'?'Coffee':item.category==='non-kopi'?'Non-Coffee':'Food'}</span>
-                        <button class="btn-add" id="addBtn-${item.id}" onclick="addToCart(${item.id})">
-                            <i class="fas fa-plus" style="font-size:0.75rem;margin-right:4px;"></i> Tambah
-                        </button>
-                    </div>
-                </div>`;
+            card.innerHTML=`<div class="img-wrap"><img src="${item.img}" alt="${item.name}" loading="lazy"><div class="price-tag">Rp ${item.price.toLocaleString('id-ID')}</div></div><div style="padding:1.2rem;"><h3 class="font-display font-bold text-lg mb-1">${item.name}</h3><p style="color:var(--fg-muted);font-size:0.85rem;margin-bottom:1rem;line-height:1.5;">${item.desc}</p><div class="flex items-center justify-between"><span style="color:var(--accent);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;font-weight:600;">${item.category==='kopi'?'Coffee':item.category==='non-kopi'?'Non-Coffee':'Food'}</span><button class="btn-add" id="addBtn-${item.id}" onclick="addToCart(${item.id})"><i class="fas fa-plus" style="font-size:0.75rem;margin-right:4px;"></i> Tambah</button></div></div>`;
             grid.appendChild(card);
         });
         requestAnimationFrame(()=>{ grid.querySelectorAll('.reveal').forEach(observeReveal); });
@@ -579,62 +474,38 @@
     }
 
     function addToCart(id){
-        const item=menuData.find(m=>m.id===id); if(!item) return;
+        const item=menuData.find(m=>m.id===id); if(!item)return;
         const ex=cart.find(c=>c.id===id);
-        if(ex) ex.qty++; else cart.push({...item,qty:1});
+        if(ex)ex.qty++; else cart.push({...item,qty:1});
         const btn=document.getElementById(`addBtn-${id}`);
-        if(btn){
-            btn.classList.add('added');
-            btn.innerHTML='<i class="fas fa-check" style="font-size:0.75rem;margin-right:4px;"></i> Ditambah';
-            setTimeout(()=>{ btn.classList.remove('added'); btn.innerHTML='<i class="fas fa-plus" style="font-size:0.75rem;margin-right:4px;"></i> Tambah'; },1500);
-        }
+        if(btn){ btn.classList.add('added'); btn.innerHTML='<i class="fas fa-check" style="font-size:0.75rem;margin-right:4px;"></i> Ditambah'; setTimeout(()=>{ btn.classList.remove('added'); btn.innerHTML='<i class="fas fa-plus" style="font-size:0.75rem;margin-right:4px;"></i> Tambah'; },1500); }
         updateCart(); showToast(`${item.name} ditambahkan ke keranjang`);
     }
     function removeFromCart(id){ cart=cart.filter(c=>c.id!==id); updateCart(); }
-    function changeQty(id,d){
-        const item=cart.find(c=>c.id===id); if(!item) return;
-        item.qty+=d; if(item.qty<=0){ removeFromCart(id); return; } updateCart();
-    }
+    function changeQty(id,d){ const item=cart.find(c=>c.id===id); if(!item)return; item.qty+=d; if(item.qty<=0){removeFromCart(id);return;} updateCart(); }
     function updateCart(){
-        const badge=document.getElementById('cartBadge'), list=document.getElementById('cartList'),
-              empty=document.getElementById('cartEmpty'), footer=document.getElementById('cartFooter'),
-              totalEl=document.getElementById('cartTotal');
-        const totalItems=cart.reduce((s,c)=>s+c.qty,0), totalPrice=cart.reduce((s,c)=>s+c.price*c.qty,0);
-        badge.style.display=totalItems>0?'flex':'none';
-        badge.textContent=totalItems;
-        empty.style.display=totalItems>0?'none':'block';
-        footer.classList.toggle('hidden',totalItems===0);
+        const badge=document.getElementById('cartBadge'),list=document.getElementById('cartList'),empty=document.getElementById('cartEmpty'),footer=document.getElementById('cartFooter'),totalEl=document.getElementById('cartTotal');
+        const totalItems=cart.reduce((s,c)=>s+c.qty,0),totalPrice=cart.reduce((s,c)=>s+c.price*c.qty,0);
+        badge.style.display=totalItems>0?'flex':'none'; badge.textContent=totalItems;
+        empty.style.display=totalItems>0?'none':'block'; footer.classList.toggle('hidden',totalItems===0);
         totalEl.textContent=`Rp ${totalPrice.toLocaleString('id-ID')}`;
         list.innerHTML='';
         cart.forEach(item=>{
             const div=document.createElement('div'); div.className='cart-item';
-            div.innerHTML=`<img src="https://picsum.photos/seed/${item.img}/120/120.jpg" alt="${item.name}">
-                <div class="flex-1">
-                    <div class="font-bold" style="font-size:0.9rem;">${item.name}</div>
-                    <div style="color:var(--accent);font-size:0.85rem;font-weight:600;">Rp ${item.price.toLocaleString('id-ID')}</div>
-                    <div class="flex items-center gap-2 mt-2">
-                        <button class="qty-btn" onclick="changeQty(${item.id},-1)"><i class="fas fa-minus" style="font-size:0.65rem;"></i></button>
-                        <span style="font-size:0.9rem;font-weight:600;min-width:20px;text-align:center;">${item.qty}</span>
-                        <button class="qty-btn" onclick="changeQty(${item.id},1)"><i class="fas fa-plus" style="font-size:0.65rem;"></i></button>
-                        <button onclick="removeFromCart(${item.id})" style="background:none;border:none;color:#e74c3c;cursor:pointer;margin-left:auto;font-size:0.8rem;" aria-label="Hapus"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>`;
+            div.innerHTML=`<img src="${item.img}" alt="${item.name}"><div class="flex-1"><div class="font-bold" style="font-size:0.9rem;">${item.name}</div><div style="color:var(--accent);font-size:0.85rem;font-weight:600;">Rp ${item.price.toLocaleString('id-ID')}</div><div class="flex items-center gap-2 mt-2"><button class="qty-btn" onclick="changeQty(${item.id},-1)"><i class="fas fa-minus" style="font-size:0.65rem;"></i></button><span style="font-size:0.9rem;font-weight:600;min-width:20px;text-align:center;">${item.qty}</span><button class="qty-btn" onclick="changeQty(${item.id},1)"><i class="fas fa-plus" style="font-size:0.65rem;"></i></button><button onclick="removeFromCart(${item.id})" style="background:none;border:none;color:#e74c3c;cursor:pointer;margin-left:auto;font-size:0.8rem;" aria-label="Hapus"><i class="fas fa-trash-alt"></i></button></div></div>`;
             list.appendChild(div);
         });
     }
     function toggleCart(){ document.getElementById('cartPanel').classList.toggle('open'); document.getElementById('cartOverlay').classList.toggle('open'); }
-
-    // Checkout — mengirim pesan ke nomor WA yang sudah diupdate
     function checkout(){
-        if(!cart.length) return;
+        if(!cart.length)return;
         let msg='Halo! Saya ingin memesan:\n\n';
         cart.forEach(i=>{ msg+=`- ${i.name} x${i.qty} (Rp ${(i.price*i.qty).toLocaleString('id-ID')})\n`; });
         msg+=`\nTotal: Rp ${cart.reduce((s,c)=>s+c.price*c.qty,0).toLocaleString('id-ID')}\n\nTerima kasih!`;
         window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
     }
-
     function showToast(msg){
-        const c=document.getElementById('toastContainer'), t=document.createElement('div');
+        const c=document.getElementById('toastContainer'),t=document.createElement('div');
         t.className='toast'; t.innerHTML=`<i class="fas fa-check-circle" style="color:var(--accent);"></i> ${msg}`;
         c.appendChild(t); setTimeout(()=>t.remove(),2800);
     }
@@ -646,120 +517,91 @@
     document.querySelectorAll('.reveal').forEach(observeReveal);
 
     document.addEventListener('mousemove',e=>{
-        const x=e.clientX-window.innerWidth/2, y=e.clientY-window.innerHeight/2;
-        document.querySelectorAll('.parallax-layer').forEach(l=>{
-            const s=parseFloat(l.dataset.speed)||0.02;
-            l.style.transform=`translate(${x*s}px,${y*s}px)`;
-        });
+        const x=e.clientX-window.innerWidth/2,y=e.clientY-window.innerHeight/2;
+        document.querySelectorAll('.parallax-layer').forEach(l=>{ const s=parseFloat(l.dataset.speed)||0.02; l.style.transform=`translate(${x*s}px,${y*s}px)`; });
     });
 
     // === SNAKE GAME ===
-    const CELL = 24, COLS = 20, ROWS = 20;
-    const canvas = document.getElementById('snakeCanvas');
-    const ctx = canvas.getContext('2d');
-    let snake, food, dir, nextDir, score, level, highScore, gameLoop, paused, running;
+    const CELL=24,COLS=20,ROWS=20;
+    const canvas=document.getElementById('snakeCanvas'),ctx=canvas.getContext('2d');
+    let snake,food,dir,nextDir,score,level,highScore,gameLoop,paused,running;
+    highScore=parseInt(localStorage.getItem('kopiSnakeHigh')||'0');
+    document.getElementById('gameHigh').textContent=highScore;
 
-    highScore = parseInt(localStorage.getItem('kopiSnakeHigh') || '0');
-    document.getElementById('gameHigh').textContent = highScore;
-
-    function openSnakeGame() {
-        document.getElementById('gameModal').classList.add('open');
-        document.getElementById('gameStart').classList.remove('hidden');
-        document.getElementById('gameOver').classList.remove('show');
-        drawEmptyGrid();
+    function openSnakeGame(){ document.getElementById('gameModal').classList.add('open'); document.getElementById('gameStart').classList.remove('hidden'); document.getElementById('gameOver').classList.remove('show'); drawEmptyGrid(); }
+    function closeSnakeGame(){ document.getElementById('gameModal').classList.remove('open'); if(gameLoop)clearInterval(gameLoop); running=false; }
+    function drawEmptyGrid(){
+        ctx.fillStyle='#0d0804'; ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.strokeStyle='rgba(58,42,30,0.3)'; ctx.lineWidth=0.5;
+        for(let x=0;x<=COLS;x++){ctx.beginPath();ctx.moveTo(x*CELL,0);ctx.lineTo(x*CELL,ROWS*CELL);ctx.stroke();}
+        for(let y=0;y<=ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*CELL);ctx.lineTo(COLS*CELL,y*CELL);ctx.stroke();}
     }
-    function closeSnakeGame() {
-        document.getElementById('gameModal').classList.remove('open');
-        if (gameLoop) clearInterval(gameLoop);
-        running = false;
+    function startSnakeGame(){
+        document.getElementById('gameStart').classList.add('hidden'); document.getElementById('gameOver').classList.remove('show');
+        const sx=Math.floor(COLS/2),sy=Math.floor(ROWS/2);
+        snake=[{x:sx,y:sy},{x:sx-1,y:sy},{x:sx-2,y:sy}];
+        dir={x:1,y:0}; nextDir={x:1,y:0}; score=0; level=1; paused=false; running=true;
+        document.getElementById('gameScore').textContent='0'; document.getElementById('gameLevel').textContent='1'; document.getElementById('snakeBadge').style.display='none';
+        spawnFood(); if(gameLoop)clearInterval(gameLoop); gameLoop=setInterval(gameTick,getSpeed());
     }
-    function drawEmptyGrid() {
-        ctx.fillStyle = '#0d0804';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = 'rgba(58,42,30,0.3)';
-        ctx.lineWidth = 0.5;
-        for (let x = 0; x <= COLS; x++) { ctx.beginPath(); ctx.moveTo(x*CELL,0); ctx.lineTo(x*CELL,ROWS*CELL); ctx.stroke(); }
-        for (let y = 0; y <= ROWS; y++) { ctx.beginPath(); ctx.moveTo(0,y*CELL); ctx.lineTo(COLS*CELL,y*CELL); ctx.stroke(); }
-    }
-    function startSnakeGame() {
-        document.getElementById('gameStart').classList.add('hidden');
-        document.getElementById('gameOver').classList.remove('show');
-        const sx = Math.floor(COLS/2), sy = Math.floor(ROWS/2);
-        snake = [{x:sx,y:sy},{x:sx-1,y:sy},{x:sx-2,y:sy}];
-        dir = {x:1,y:0}; nextDir = {x:1,y:0};
-        score = 0; level = 1; paused = false; running = true;
-        document.getElementById('gameScore').textContent = '0';
-        document.getElementById('gameLevel').textContent = '1';
-        document.getElementById('snakeBadge').style.display = 'none';
-        spawnFood();
-        if (gameLoop) clearInterval(gameLoop);
-        gameLoop = setInterval(gameTick, getSpeed());
-    }
-    function getSpeed() { return Math.max(80, 140 - (level-1)*12); }
-    function spawnFood() {
-        let a = 0;
-        do { food = {x:Math.floor(Math.random()*COLS),y:Math.floor(Math.random()*ROWS)}; a++; }
-        while (snake.some(s=>s.x===food.x&&s.y===food.y) && a<500);
-    }
-    function gameTick() {
-        if (paused) return;
-        dir = {...nextDir};
-        const head = {x:snake[0].x+dir.x, y:snake[0].y+dir.y};
-        if (head.x<0||head.x>=COLS||head.y<0||head.y>=ROWS||snake.some(s=>s.x===head.x&&s.y===head.y)) { endGame(); return; }
+    function getSpeed(){ return Math.max(80,140-(level-1)*12); }
+    function spawnFood(){ let a=0; do{food={x:Math.floor(Math.random()*COLS),y:Math.floor(Math.random()*ROWS)};a++;}while(snake.some(s=>s.x===food.x&&s.y===food.y)&&a<500); }
+    function gameTick(){
+        if(paused)return; dir={...nextDir};
+        const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+        if(head.x<0||head.x>=COLS||head.y<0||head.y>=ROWS||snake.some(s=>s.x===head.x&&s.y===head.y)){endGame();return;}
         snake.unshift(head);
-        if (head.x===food.x&&head.y===food.y) {
-            score += level*10;
-            document.getElementById('gameScore').textContent = score;
-            const nl = Math.floor(score/50)+1;
-            if (nl!==level) { level=nl; document.getElementById('gameLevel').textContent=level; clearInterval(gameLoop); gameLoop=setInterval(gameTick,getSpeed()); }
+        if(head.x===food.x&&head.y===food.y){
+            score+=level*10; document.getElementById('gameScore').textContent=score;
+            const nl=Math.floor(score/50)+1; if(nl!==level){level=nl;document.getElementById('gameLevel').textContent=level;clearInterval(gameLoop);gameLoop=setInterval(gameTick,getSpeed());}
             const badge=document.getElementById('snakeBadge'); badge.style.display='flex'; badge.textContent=score;
             spawnFood();
-        } else { snake.pop(); }
+        }else{snake.pop();}
         draw();
     }
-    function draw() {
-        ctx.fillStyle='#0d0804'; ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.strokeStyle='rgba(58,42,30,0.2)'; ctx.lineWidth=0.5;
+    function draw(){
+        ctx.fillStyle='#0d0804';ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.strokeStyle='rgba(58,42,30,0.2)';ctx.lineWidth=0.5;
         for(let x=0;x<=COLS;x++){ctx.beginPath();ctx.moveTo(x*CELL,0);ctx.lineTo(x*CELL,ROWS*CELL);ctx.stroke();}
         for(let y=0;y<=ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*CELL);ctx.lineTo(COLS*CELL,y*CELL);ctx.stroke();}
         drawCoffeeBean(food.x,food.y);
         snake.forEach((seg,i)=>{
-            const isHead=i===0, progress=i/Math.max(snake.length-1,1);
+            const isHead=i===0,progress=i/Math.max(snake.length-1,1);
             if(isHead){
-                ctx.fillStyle='#6fcf5a'; roundRect(ctx,seg.x*CELL+1,seg.y*CELL+1,CELL-2,CELL-2,6); ctx.fill();
-                ctx.fillStyle='#0d0804'; const es=3;
+                ctx.fillStyle='#6fcf5a';roundRect(ctx,seg.x*CELL+1,seg.y*CELL+1,CELL-2,CELL-2,6);ctx.fill();
+                ctx.fillStyle='#0d0804';const es=3;
                 if(dir.x===1){ctx.fillRect(seg.x*CELL+CELL-8,seg.y*CELL+6,es,es);ctx.fillRect(seg.x*CELL+CELL-8,seg.y*CELL+CELL-9,es,es);}
                 else if(dir.x===-1){ctx.fillRect(seg.x*CELL+5,seg.y*CELL+6,es,es);ctx.fillRect(seg.x*CELL+5,seg.y*CELL+CELL-9,es,es);}
                 else if(dir.y===-1){ctx.fillRect(seg.x*CELL+6,seg.y*CELL+5,es,es);ctx.fillRect(seg.x*CELL+CELL-9,seg.y*CELL+5,es,es);}
                 else{ctx.fillRect(seg.x*CELL+6,seg.y*CELL+CELL-8,es,es);ctx.fillRect(seg.x*CELL+CELL-9,seg.y*CELL+CELL-8,es,es);}
-            } else {
+            }else{
                 ctx.fillStyle=`rgb(${Math.round(45-progress*20)},${Math.round(158-progress*80)},${Math.round(39-progress*15)})`;
-                const sh=2+progress*1; roundRect(ctx,seg.x*CELL+sh,seg.y*CELL+sh,CELL-sh*2,CELL-sh*2,5); ctx.fill();
+                const sh=2+progress*1;roundRect(ctx,seg.x*CELL+sh,seg.y*CELL+sh,CELL-sh*2,CELL-sh*2,5);ctx.fill();
             }
         });
         const hg=ctx.createRadialGradient(snake[0].x*CELL+CELL/2,snake[0].y*CELL+CELL/2,2,snake[0].x*CELL+CELL/2,snake[0].y*CELL+CELL/2,CELL*1.5);
-        hg.addColorStop(0,'rgba(111,207,90,0.15)'); hg.addColorStop(1,'rgba(111,207,90,0)');
-        ctx.fillStyle=hg; ctx.fillRect(snake[0].x*CELL-CELL,snake[0].y*CELL-CELL,CELL*3,CELL*3);
+        hg.addColorStop(0,'rgba(111,207,90,0.15)');hg.addColorStop(1,'rgba(111,207,90,0)');
+        ctx.fillStyle=hg;ctx.fillRect(snake[0].x*CELL-CELL,snake[0].y*CELL-CELL,CELL*3,CELL*3);
     }
     function drawCoffeeBean(cx,cy){
         const x=cx*CELL+CELL/2,y=cy*CELL+CELL/2,r=CELL/2-2;
         const glow=ctx.createRadialGradient(x,y,2,x,y,r*2.5);
-        glow.addColorStop(0,'rgba(212,160,83,0.25)'); glow.addColorStop(1,'rgba(212,160,83,0)');
-        ctx.fillStyle=glow; ctx.beginPath(); ctx.arc(x,y,r*2.5,0,Math.PI*2); ctx.fill();
-        ctx.save(); ctx.translate(x,y);
-        ctx.beginPath(); ctx.ellipse(0,0,r,r*1.2,0,0,Math.PI*2); ctx.fillStyle='#d4a053'; ctx.fill();
-        ctx.beginPath(); ctx.moveTo(0,-r*0.9); ctx.quadraticCurveTo(2,0,0,r*0.9); ctx.strokeStyle='#8b6914'; ctx.lineWidth=1.5; ctx.stroke();
-        ctx.beginPath(); ctx.ellipse(-2,-3,r*0.3,r*0.5,-0.3,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,0.15)'; ctx.fill();
+        glow.addColorStop(0,'rgba(212,160,83,0.25)');glow.addColorStop(1,'rgba(212,160,83,0)');
+        ctx.fillStyle=glow;ctx.beginPath();ctx.arc(x,y,r*2.5,0,Math.PI*2);ctx.fill();
+        ctx.save();ctx.translate(x,y);
+        ctx.beginPath();ctx.ellipse(0,0,r,r*1.2,0,0,Math.PI*2);ctx.fillStyle='#d4a053';ctx.fill();
+        ctx.beginPath();ctx.moveTo(0,-r*0.9);ctx.quadraticCurveTo(2,0,0,r*0.9);ctx.strokeStyle='#8b6914';ctx.lineWidth=1.5;ctx.stroke();
+        ctx.beginPath();ctx.ellipse(-2,-3,r*0.3,r*0.5,-0.3,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.15)';ctx.fill();
         ctx.restore();
     }
     function roundRect(ctx,x,y,w,h,r){
         r=Math.min(r,Math.max(w,0)/2,Math.max(h,0)/2);
-        ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-        ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h);
-        ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+        ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+        ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+        ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
     }
     function endGame(){
-        if(gameLoop)clearInterval(gameLoop); running=false;
+        if(gameLoop)clearInterval(gameLoop);running=false;
         document.getElementById('finalScore').textContent=score;
         const nhm=document.getElementById('newHighMsg');
         if(score>highScore){highScore=score;localStorage.setItem('kopiSnakeHigh',highScore);document.getElementById('gameHigh').textContent=highScore;nhm.classList.remove('hidden');}
@@ -769,7 +611,7 @@
     function setDir(dx,dy){ if(dir.x===-dx&&dir.y===-dy)return; if(!running)return; nextDir={x:dx,y:dy}; if(paused)paused=false; }
 
     document.addEventListener('keydown',e=>{
-        if(!running) return;
+        if(!running)return;
         switch(e.key){
             case'ArrowUp':case'w':case'W':e.preventDefault();setDir(0,-1);break;
             case'ArrowDown':case's':case'S':e.preventDefault();setDir(0,1);break;
